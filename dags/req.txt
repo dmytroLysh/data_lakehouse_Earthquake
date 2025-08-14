@@ -1,1 +1,2 @@
 pip install apache-airflow==2.10.5
+pip install duckdb==1.2.2
