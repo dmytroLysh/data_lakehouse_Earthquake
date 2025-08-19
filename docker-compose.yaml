@@ -68,7 +68,7 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-duckdb==1.2.2}
     # The following line can be used to set a custom config file, stored in the local config folder
     # If you want to use it, outcomment it and replace airflow.cfg with the name of your config file
     # AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
@@ -95,19 +95,22 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    volumes:
+    - postgres-dwh-volume:/var/lib/postgresql/data
 
   minio:
     image: minio/minio:RELEASE.2025-02-18T16-25-55Z
     restart: unless-stopped
     volumes:
-      - ./data:/data
+      - minio_data:/data  
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     ports:
-      - "9000:9000" 
+      - "9000:9000"
       - "9001:9001"
+
 
   metabase:
     build:
@@ -317,3 +320,5 @@ services:
 
 volumes:
   postgres-db-volume:
+  minio_data:
+  postgres-dwh-volume:
