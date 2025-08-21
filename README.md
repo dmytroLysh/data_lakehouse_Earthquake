@@ -124,8 +124,4 @@ _Screenshot placeholder:_
 
 - **Do not commit real credentials.** Keep secrets in Airflow Variables or MinIO service accounts.  
 - Ensure your **bucket name** and **Airflow Variable names** match what the DAGs expect.  
-- The dependencies file is **`req.txt`** (not `requirements.txt`).  
 
-## License
-
-MIT
